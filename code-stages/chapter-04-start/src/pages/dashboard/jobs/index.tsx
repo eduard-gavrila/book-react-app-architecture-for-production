@@ -6,22 +6,21 @@ import { Link } from '@/components/link';
 import { Loading } from '@/components/loading';
 import { Seo } from '@/components/seo';
 import { JobsList } from '@/features/jobs';
-import { useJobs } from '@/features/jobs';
 import { DashboardLayout } from '@/layouts/dashboard-layout';
-import { useUser } from '@/testing/test-data';
+import { useJobs, useUser } from '@/testing/test-data';
 
 const DashboardJobsPage = () => {
   const user = useUser();
 
-  const jobs = useJobs({
-    params: {
-      organizationId: user.data?.organizationId ?? '',
-    },
-  });
+  const jobs = useJobs(user.data?.organizationId ?? '');
 
-  if (jobs.isLoading) return <Loading />;
+  if (jobs.isLoading) {
+    return <Loading />;
+  }
 
-  if (!user.data) return null;
+  if (!user.data) {
+    return null;
+  }
 
   return (
     <>
@@ -50,10 +49,8 @@ const DashboardJobsPage = () => {
   );
 };
 
-DashboardJobsPage.getLayout = function getLayout(
-  page: ReactElement
-) {
-  return <DashboardLayout>{page}</DashboardLayout>;
-};
+DashboardJobsPage.getLayout = (page: ReactElement) => (
+  <DashboardLayout>{page}</DashboardLayout>
+);
 
 export default DashboardJobsPage;
